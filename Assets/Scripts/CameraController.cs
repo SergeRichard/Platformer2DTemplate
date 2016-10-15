@@ -28,4 +28,10 @@ public class CameraController : MonoBehaviour {
 
 		transform.position = Vector3.Lerp (transform.position, targetPosition, smoothing * Time.deltaTime);
 	}
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "KillPlane") {
+
+			gameObject.SetActive (false);
+		}
+	}
 }
