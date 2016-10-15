@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 	public Vector3 respawnPosition;
 
+	private LevelManager theLevelManager;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 		mySpriteRenderer = GetComponent<SpriteRenderer> ();
 
 		respawnPosition = transform.position;
+		theLevelManager = FindObjectOfType<LevelManager> ();
 	}
 	
 	// Update is called once per frame
@@ -51,9 +53,8 @@ public class PlayerController : MonoBehaviour {
 	}
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "KillPlane") {
+			theLevelManager.Respawn ();
 
-			//gameObject.SetActive (false);
-			transform.position = respawnPosition;
 		}
 		if (other.tag == "Checkpoint") {
 			respawnPosition = other.transform.position;
