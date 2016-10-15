@@ -17,11 +17,16 @@ public class PlayerController : MonoBehaviour {
 	private Animator myAnim;
 	private SpriteRenderer mySpriteRenderer;
 
+	public Vector3 respawnPosition;
+
+
 	// Use this for initialization
 	void Start () {
 		myRigidbody = GetComponent<Rigidbody2D> ();
 		myAnim = GetComponent<Animator> ();
 		mySpriteRenderer = GetComponent<SpriteRenderer> ();
+
+		respawnPosition = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -43,5 +48,16 @@ public class PlayerController : MonoBehaviour {
 
 		myAnim.SetFloat ("Speed", Mathf.Abs(myRigidbody.velocity.x));
 		myAnim.SetBool ("Grounded", isGrounded);
+	}
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "KillPlane") {
+
+			//gameObject.SetActive (false);
+			transform.position = respawnPosition;
+		}
+		if (other.tag == "Checkpoint") {
+			respawnPosition = other.transform.position;
+		}
+
 	}
 }
