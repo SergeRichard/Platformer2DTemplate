@@ -18,7 +18,14 @@ public class LevelManager : MonoBehaviour {
 
 	public void Respawn()
 	{
+		StartCoroutine (RespawnCo ());	
+	}
+
+	public IEnumerator RespawnCo() {
 		thePlayer.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds (waitToRespawn);
+
 		thePlayer.transform.position = thePlayer.respawnPosition;
 		thePlayer.gameObject.SetActive (true);
 	}
