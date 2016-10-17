@@ -5,6 +5,7 @@ public class LevelManager : MonoBehaviour {
 
 	public float waitToRespawn;
 	public PlayerController thePlayer;
+	public GameObject deathExplosion;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,8 @@ public class LevelManager : MonoBehaviour {
 
 	public IEnumerator RespawnCo() {
 		thePlayer.gameObject.SetActive (false);
+
+		Instantiate (deathExplosion, thePlayer.transform.position, thePlayer.transform.rotation);
 
 		yield return new WaitForSeconds (waitToRespawn);
 
