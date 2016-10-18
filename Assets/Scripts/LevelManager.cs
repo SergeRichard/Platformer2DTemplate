@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class LevelManager : MonoBehaviour {
@@ -7,10 +8,13 @@ public class LevelManager : MonoBehaviour {
 	public PlayerController thePlayer;
 	public GameObject deathExplosion;
 	public int coinCount;
+	public Text coinText;
 
 	// Use this for initialization
 	void Start () {
 		thePlayer = FindObjectOfType<PlayerController> ();
+
+		coinText.text = "Coins: " + coinCount;
 	}
 	
 	// Update is called once per frame
@@ -35,6 +39,6 @@ public class LevelManager : MonoBehaviour {
 	}
 	public void AddCoins(int coinsToAdd) {
 		coinCount += coinsToAdd;
-
+		coinText.text = "Coins: " + coinCount;
 	}
 }
