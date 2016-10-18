@@ -53,7 +53,9 @@ public class PlayerController : MonoBehaviour {
 	}
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "KillPlane") {
-			theLevelManager.Respawn ();
+			theLevelManager.healthCount = 0;
+			theLevelManager.UpdateHealthMeter ();
+			//theLevelManager.Respawn ();
 
 		}
 		if (other.tag == "Checkpoint") {
