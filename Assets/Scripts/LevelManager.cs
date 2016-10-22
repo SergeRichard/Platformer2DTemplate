@@ -27,6 +27,11 @@ public class LevelManager : MonoBehaviour {
 
 	public bool invincible;
 
+	public Text livesText;
+
+	public int startingLives;
+	public int currentLives;
+
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +42,10 @@ public class LevelManager : MonoBehaviour {
 		healthCount = maxHealth;
 
 		objectsToReset = FindObjectsOfType<ResetOnRespawn> ();
+
+		currentLives = startingLives;
+		livesText.text = "Lives x " + currentLives;
+
 	}
 	
 	// Update is called once per frame
@@ -49,7 +58,14 @@ public class LevelManager : MonoBehaviour {
 
 	public void Respawn()
 	{
-		StartCoroutine (RespawnCo ());	
+		currentLives--;
+		livesText.text = "Lives x " + currentLives;
+		if (currentLives > 0) {
+			StartCoroutine (RespawnCo ());	
+		} else {
+			thePlayer.gameObject.SetActive (false);
+
+		}
 	}
 
 	public IEnumerator RespawnCo() {
