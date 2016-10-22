@@ -37,6 +37,11 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject gameOverScreen;
 
+	public AudioSource levelMusic;
+	public AudioSource gameOverMusic;
+
+	public AudioSource coinAudioSource;
+
 	// Use this for initialization
 	void Start () {
 		thePlayer = FindObjectOfType<PlayerController> ();
@@ -74,6 +79,9 @@ public class LevelManager : MonoBehaviour {
 		} else {
 			thePlayer.gameObject.SetActive (false);
 			gameOverScreen.SetActive (true);
+			levelMusic.Stop ();
+			gameOverMusic.Play ();
+			//levelMusic.volume /= 2f;
 		}
 	}
 
@@ -105,6 +113,7 @@ public class LevelManager : MonoBehaviour {
 		coinBonusLifeCount += coinsToAdd;
 
 		coinText.text = "Coins: " + coinCount;
+		coinAudioSource.Play ();
 	}
 
 	public void HurtPlayer(int damageToTake) {
@@ -113,6 +122,7 @@ public class LevelManager : MonoBehaviour {
 			UpdateHealthMeter ();
 
 			thePlayer.KnockBack ();
+			thePlayer.HurtAudioSource.Play ();
 		}
 	}
 	public void GiveHealth(int healthToGive) {
@@ -120,6 +130,8 @@ public class LevelManager : MonoBehaviour {
 		if (healthCount < maxHealth) {
 			healthCount = maxHealth;
 		}
+		coinAudioSource.Play ();
+
 		UpdateHealthMeter ();
 	}
 	public void UpdateHealthMeter () {
@@ -166,6 +178,6 @@ public class LevelManager : MonoBehaviour {
 		currentLives += livesToAdd;
 
 		livesText.text = "Lives x " + currentLives;
-
+		coinAudioSource.Play ();
 	}
 }

@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour {
 	public float invincibilityLength;
 	private float invincibilityCounter;
 
+	public AudioSource JumpAudioSource;
+	public AudioSource HurtAudioSource;
+
 	// Use this for initialization
 	void Start () {
 		myRigidbody = GetComponent<Rigidbody2D> ();
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			if (Input.GetButtonDown ("Jump") && isGrounded) {
 				myRigidbody.velocity = new Vector3 (myRigidbody.velocity.x, jumpSpeed, 0f);
+				JumpAudioSource.Play ();
 			}
 
 			theLevelManager.invincible = false;
