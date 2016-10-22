@@ -104,6 +104,13 @@ public class LevelManager : MonoBehaviour {
 			thePlayer.KnockBack ();
 		}
 	}
+	public void GiveHealth(int healthToGive) {
+		healthCount += healthToGive;
+		if (healthCount < maxHealth) {
+			healthCount = maxHealth;
+		}
+		UpdateHealthMeter ();
+	}
 	public void UpdateHealthMeter () {
 		switch (healthCount) {
 		case 6:
