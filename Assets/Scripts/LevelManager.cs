@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour {
 	public int startingLives;
 	public int currentLives;
 
+	public GameObject gameOverScreen;
 
 	// Use this for initialization
 	void Start () {
@@ -64,7 +65,7 @@ public class LevelManager : MonoBehaviour {
 			StartCoroutine (RespawnCo ());	
 		} else {
 			thePlayer.gameObject.SetActive (false);
-
+			gameOverScreen.SetActive (true);
 		}
 	}
 
