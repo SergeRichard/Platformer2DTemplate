@@ -143,4 +143,10 @@ public class LevelManager : MonoBehaviour {
 		}
 
 	}
+	public void AddLives(int livesToAdd) {
+		currentLives += livesToAdd;
+
+		livesText.text = "Lives x " + currentLives;
+
+	}
 }
