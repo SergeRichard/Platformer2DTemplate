@@ -23,6 +23,8 @@ public class LevelManager : MonoBehaviour {
 
 	private bool respawning;
 
+	private ResetOnRespawn[] objectsToReset;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour {
 		coinText.text = "Coins: " + coinCount;
 
 		healthCount = maxHealth;
+
+		objectsToReset = FindObjectsOfType<ResetOnRespawn> ();
 	}
 	
 	// Update is called once per frame
@@ -57,8 +61,16 @@ public class LevelManager : MonoBehaviour {
 		respawning = false;
 		UpdateHealthMeter ();
 
+		coinCount = 0;
+		coinText.text = "Coins: " + coinCount;
+
 		thePlayer.transform.position = thePlayer.respawnPosition;
 		thePlayer.gameObject.SetActive (true);
+
+		for (int i = 0; i < objectsToReset.Length; ++i) {		
+			objectsToReset [i].gameObject.SetActive (true);	
+			objectsToReset [i].ResetObject ();
+		}
 	}
 	public void AddCoins(int coinsToAdd) {
 		coinCount += coinsToAdd;
