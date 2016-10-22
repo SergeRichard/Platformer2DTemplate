@@ -8,6 +8,9 @@ public class LevelManager : MonoBehaviour {
 	public PlayerController thePlayer;
 	public GameObject deathExplosion;
 	public int coinCount;
+	private int coinBonusLifeCount;
+	public int bonusLifeThreshold;
+
 	public Text coinText;
 
 	public Image heart1;
@@ -55,6 +58,11 @@ public class LevelManager : MonoBehaviour {
 			Respawn ();
 			respawning = true;
 		}
+		if (coinBonusLifeCount >= bonusLifeThreshold) {
+			currentLives++;
+			livesText.text = "Lives x " + currentLives;
+			coinBonusLifeCount -= bonusLifeThreshold;
+		}
 	}
 
 	public void Respawn()
@@ -81,6 +89,7 @@ public class LevelManager : MonoBehaviour {
 		UpdateHealthMeter ();
 
 		coinCount = 0;
+		coinBonusLifeCount = 0;
 		coinText.text = "Coins: " + coinCount;
 
 		thePlayer.transform.position = thePlayer.respawnPosition;
@@ -93,6 +102,8 @@ public class LevelManager : MonoBehaviour {
 	}
 	public void AddCoins(int coinsToAdd) {
 		coinCount += coinsToAdd;
+		coinBonusLifeCount += coinsToAdd;
+
 		coinText.text = "Coins: " + coinCount;
 	}
 
