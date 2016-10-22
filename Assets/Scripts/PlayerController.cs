@@ -23,6 +23,13 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject stompBox;
 
+	public float knockBackForce;
+	public float knockBackLength;
+	private float knockBackCounter;
+
+	public float invincibilityLength;
+	private float invincibilityCounter;
+
 	// Use this for initialization
 	void Start () {
 		myRigidbody = GetComponent<Rigidbody2D> ();
@@ -37,17 +44,38 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
 
-		if (Input.GetAxisRaw ("Horizontal") > 0f) {
-			myRigidbody.velocity = new Vector3 (moveSpeed, myRigidbody.velocity.y, 0f);
-			mySpriteRenderer.flipX = false;
-		} else if (Input.GetAxisRaw ("Horizontal") < 0f) {
-			myRigidbody.velocity = new Vector3 (-moveSpeed, myRigidbody.velocity.y, 0f);
-			mySpriteRenderer.flipX = true;
-		} else {
-			myRigidbody.velocity = new Vector3 (0f, myRigidbody.velocity.y, 0f);
+		if (knockBackCounter <= 0) {
+
+			if (Input.GetAxisRaw ("Horizontal") > 0f) {
+				myRigidbody.velocity = new Vector3 (moveSpeed, myRigidbody.velocity.y, 0f);
+				mySpriteRenderer.flipX = false;
+			} else if (Input.GetAxisRaw ("Horizontal") < 0f) {
+				myRigidbody.velocity = new Vector3 (-moveSpeed, myRigidbody.velocity.y, 0f);
+				mySpriteRenderer.flipX = true;
+			} else {
+				myRigidbody.velocity = new Vector3 (0f, myRigidbody.velocity.y, 0f);
+			}
+			if (Input.GetButtonDown ("Jump") && isGrounded) {
+				myRigidbody.velocity = new Vector3 (myRigidbody.velocity.x, jumpSpeed, 0f);
+			}
+
+			theLevelManager.invincible = false;
 		}
-		if (Input.GetButtonDown ("Jump") && isGrounded) {
-			myRigidbody.velocity = new Vector3 (myRigidbody.velocity.x, jumpSpeed, 0f);
+
+		if (knockBackCounter > 0) {
+			knockBackCounter -= Time.deltaTime;
+
+			if (mySpriteRenderer.flipX) 
+				myRigidbody.velocity = new Vector3 (knockBackForce, knockBackForce/2, 0f);
+			else
+				myRigidbody.velocity = new Vector3 (-knockBackForce, knockBackForce/2, 0f);
+		}
+
+		if (invincibilityCounter > 0) {
+			invincibilityCounter -= Time.deltaTime;
+
+		} else {
+			theLevelManager.invincible = false;
 		}
 
 		myAnim.SetFloat ("Speed", Mathf.Abs(myRigidbody.velocity.x));
@@ -59,6 +87,15 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			stompBox.SetActive (false);
 		}
+	}
+	public void KnockBack() {
+		knockBackCounter = knockBackLength;
+		invincibilityCounter = invincibilityLength;
+		theLevelManager.invincible = true;
+	}
+	public void OnEnable() {
+		knockBackCounter = 0;
+
 	}
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "KillPlane") {

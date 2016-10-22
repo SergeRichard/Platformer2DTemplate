@@ -25,6 +25,8 @@ public class LevelManager : MonoBehaviour {
 
 	private ResetOnRespawn[] objectsToReset;
 
+	public bool invincible;
+
 
 	// Use this for initialization
 	void Start () {
@@ -78,9 +80,12 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void HurtPlayer(int damageToTake) {
+		if (!invincible) {
+			healthCount -= damageToTake;
+			UpdateHealthMeter ();
 
-		healthCount -= damageToTake;
-		UpdateHealthMeter ();
+			thePlayer.KnockBack ();
+		}
 	}
 	public void UpdateHealthMeter () {
 		switch (healthCount) {

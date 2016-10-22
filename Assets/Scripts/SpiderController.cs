@@ -31,4 +31,8 @@ public class SpiderController : MonoBehaviour {
 		}
 
 	}
+	void OnEnable() {
+		canMove = false;
+
+	}
 }
