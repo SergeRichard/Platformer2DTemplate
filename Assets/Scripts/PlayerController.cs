@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float moveSpeed;
+	private float activeMoveSpeed;
 	private Rigidbody2D myRigidbody;
 
 	public float jumpSpeed;
@@ -33,6 +34,9 @@ public class PlayerController : MonoBehaviour {
 	public AudioSource JumpAudioSource;
 	public AudioSource HurtAudioSource;
 
+	private bool onPlatform;
+	public float onPlatformSpeedModifier;
+
 	// Use this for initialization
 	void Start () {
 		myRigidbody = GetComponent<Rigidbody2D> ();
@@ -41,6 +45,8 @@ public class PlayerController : MonoBehaviour {
 
 		respawnPosition = transform.position;
 		theLevelManager = FindObjectOfType<LevelManager> ();
+
+		activeMoveSpeed = moveSpeed;
 	}
 	
 	// Update is called once per frame
@@ -48,12 +54,16 @@ public class PlayerController : MonoBehaviour {
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
 
 		if (knockBackCounter <= 0) {
-
+			if (onPlatform) {
+				activeMoveSpeed = moveSpeed * onPlatformSpeedModifier;
+			} else {
+				activeMoveSpeed = moveSpeed;
+			}
 			if (Input.GetAxisRaw ("Horizontal") > 0f) {
-				myRigidbody.velocity = new Vector3 (moveSpeed, myRigidbody.velocity.y, 0f);
+				myRigidbody.velocity = new Vector3 (activeMoveSpeed, myRigidbody.velocity.y, 0f);
 				mySpriteRenderer.flipX = false;
 			} else if (Input.GetAxisRaw ("Horizontal") < 0f) {
-				myRigidbody.velocity = new Vector3 (-moveSpeed, myRigidbody.velocity.y, 0f);
+				myRigidbody.velocity = new Vector3 (-activeMoveSpeed, myRigidbody.velocity.y, 0f);
 				mySpriteRenderer.flipX = true;
 			} else {
 				myRigidbody.velocity = new Vector3 (0f, myRigidbody.velocity.y, 0f);
@@ -116,11 +126,13 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.tag == "MovingPlatform") {
 			transform.parent = other.transform;
+			onPlatform = true;
 		}
 	}
 	void OnCollisionExit2D(Collision2D other) {
 		if (other.gameObject.tag == "MovingPlatform") {
 			transform.parent = null;
+			onPlatform = false;
 		}
 	}
 }
