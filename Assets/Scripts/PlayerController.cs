@@ -5,7 +5,11 @@ public class PlayerController : MonoBehaviour {
 
 	public float moveSpeed;
 	private float activeMoveSpeed;
-	private Rigidbody2D myRigidbody;
+
+	public bool canMove;
+
+	[HideInInspector]
+	public Rigidbody2D myRigidbody;
 
 	public float jumpSpeed;
 
@@ -47,13 +51,15 @@ public class PlayerController : MonoBehaviour {
 		theLevelManager = FindObjectOfType<LevelManager> ();
 
 		activeMoveSpeed = moveSpeed;
+
+		canMove = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
 
-		if (knockBackCounter <= 0) {
+		if (knockBackCounter <= 0 && canMove) {
 			if (onPlatform) {
 				activeMoveSpeed = moveSpeed * onPlatformSpeedModifier;
 			} else {
