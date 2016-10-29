@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelEnd : MonoBehaviour {
 
 	public string levelToLoad;
+	public string levelToUnlock;
 
 	private PlayerController thePlayer;
 	private CameraController theCamera;
@@ -51,6 +52,11 @@ public class LevelEnd : MonoBehaviour {
 		theLevelManager.gameOverMusic.Play ();
 
 		thePlayer.myRigidbody.velocity = Vector3.zero;
+
+		PlayerPrefs.SetInt ("CoinCount", theLevelManager.coinCount);
+		PlayerPrefs.SetInt ("PlayerLives", theLevelManager.currentLives);
+
+		PlayerPrefs.SetInt (levelToUnlock, 1);
 
 		yield return new WaitForSeconds (waitToMove);
 
