@@ -42,6 +42,8 @@ public class LevelManager : MonoBehaviour {
 
 	public AudioSource coinAudioSource;
 
+	public bool respawnCoActive;
+
 	// Use this for initialization
 	void Start () {
 		thePlayer = FindObjectOfType<PlayerController> ();
@@ -95,11 +97,15 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public IEnumerator RespawnCo() {
+		respawnCoActive = true;
+
 		thePlayer.gameObject.SetActive (false);
 
 		Instantiate (deathExplosion, thePlayer.transform.position, thePlayer.transform.rotation);
 
 		yield return new WaitForSeconds (waitToRespawn);
+
+		respawnCoActive = false;
 
 		healthCount = maxHealth;
 		respawning = false;
